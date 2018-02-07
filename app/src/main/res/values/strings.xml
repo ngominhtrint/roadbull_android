@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Roadbull</string>
     <string name="title_activity_maps">Roadbull</string>
+    <string name="error_location_provider">Can not find location provider.</string>
 </resources>
