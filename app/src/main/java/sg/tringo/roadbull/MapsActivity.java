@@ -199,10 +199,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng pergolaGeo = new LatLng(10.7935588,106.6747881);
         Place pergola = new Place("Current location", "28A Trần Cao Vân, phường 12, Hồ Chí Minh, Việt Nam", "195577", "40", "Pleass go to Receiption and take the parcel from Lyon", pergolaGeo);
 
+        LatLng monkeyInBlackGeo = new LatLng(10.7891429,106.6744448);
+        Place monkeyInBlack = new Place("Current location", "522 Lê Văn Sỹ, Phường 14, Quận 3, Hồ Chí Minh, Việt Nam", "195070", "10", "Pleass go to Receiption and take the parcel from Monkey", monkeyInBlackGeo);
+
+        LatLng ozCoffeeGeo = new LatLng(10.787151,106.6768695);
+        Place ozCoffee = new Place("Current location", "Hẻm 207 Lê Văn Sỹ, Phường 13, Quận 3, Hồ Chí Minh, Việt Nam", "105070", "140", "Pleass go to Receiption and take the parcel from Monkey", ozCoffeeGeo);
+
         List<Place> places = new ArrayList<>();
         places.add(theCoffeeHouse);
         places.add(starbucks);
         places.add(pergola);
+        places.add(monkeyInBlack);
+        places.add(ozCoffee);
 
         for (Place place : places) {
             //Marker
