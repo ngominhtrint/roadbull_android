@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONObject;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import sg.tringo.roadbull.model.Place;
 import sg.tringo.roadbull.parser.DataParser;
 import sg.tringo.roadbull.views.CustomInfoWindowAdapter;
 
@@ -56,8 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Location mLocation = null;
     private GoogleMap mMap;
-    GoogleApiClient mGoogleApiClient;
-
+    private Polyline mLine;
 
     private LocationListener mLocationListener = new LocationListener() {
         @Override
@@ -118,22 +119,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        String title = "The Coffee House - Hoa Hong";
-        String subTitle = "43 Hoa Hồng, Phường 25, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam";
-
-        LatLng theCoffeeHouse = new LatLng(10.7957471, 106.6876993);
-
-        //Marker
-        MarkerOptions markerOpt = new MarkerOptions();
-        markerOpt.position(theCoffeeHouse)
-                .title(title)
-                .snippet(subTitle);
-
-        //Set Custom InfoWindow Adapter
-        CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(MapsActivity.this);
-        mMap.setInfoWindowAdapter(adapter);
-        mMap.addMarker(markerOpt);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(theCoffeeHouse, 18));
+        initialMarkers();
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -148,9 +134,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 // Start downloading json data from Google Directions API
                 FetchUrl.execute(url);
-                //move map camera
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(origin));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
 
                 return false;
             }
@@ -202,6 +185,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
             mMap.addMarker(markerOptions);
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(gps, 18));
+        }
+    }
+
+    private void initialMarkers() {
+
+        LatLng theCoffeeHouseGeo = new LatLng(10.7957471, 106.6876993);
+        Place theCoffeeHouse = new Place("Current location", "43 Hoa Hồng, Phường 25, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam", "149544", "120", "Please go to Receiption and take the parcel from Lyon", theCoffeeHouseGeo);
+
+        LatLng starbucksGeo = new LatLng(10.7947459, 106.6861651);
+        Place starbucks = new Place("Current location", "214-216 Phan Xích Long, Phường 7, Phú Nhuận, Hồ Chí Minh, Việt Nam", "149577", "90", "Please go to Receiption and take the parcel from Lyon", starbucksGeo);
+
+        LatLng pergolaGeo = new LatLng(10.7935588,106.6747881);
+        Place pergola = new Place("Current location", "28A Trần Cao Vân, phường 12, Hồ Chí Minh, Việt Nam", "195577", "40", "Pleass go to Receiption and take the parcel from Lyon", pergolaGeo);
+
+        List<Place> places = new ArrayList<>();
+        places.add(theCoffeeHouse);
+        places.add(starbucks);
+        places.add(pergola);
+
+        for (Place place : places) {
+            //Marker
+            MarkerOptions markerOpt = new MarkerOptions();
+            markerOpt.position(place.getGeo());
+
+            //Set Custom InfoWindow Adapter
+            CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(MapsActivity.this, place);
+            mMap.setInfoWindowAdapter(adapter);
+            mMap.addMarker(markerOpt);
+        }
+
+        if (mLocation != null) {
+            drawMarker(mLocation);
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), 15));
+        } else {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(theCoffeeHouse.getGeo(), 15));
         }
     }
 
@@ -360,14 +378,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 lineOptions.color(Color.RED);
 
                 Log.d("onPostExecute","onPostExecute lineoptions decoded");
-
             }
 
             // Drawing polyline in the Google Map for the i-th route
             if(lineOptions != null) {
-                mMap.addPolyline(lineOptions);
-            }
-            else {
+                if (mLine == null) {
+                    mLine = mMap.addPolyline(lineOptions);
+                } else {
+                    mLine.remove();
+                    mLine = mMap.addPolyline(lineOptions);
+                }
+            } else {
                 Log.d("onPostExecute","without Polylines drawn");
             }
         }

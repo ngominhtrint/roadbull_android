@@ -5,13 +5,31 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold" />
+        android:singleLine="false" />
 
     <TextView
-        android:id="@+id/tv_subtitle"
+        android:id="@+id/tv_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="false" />
+
+    <TextView
+        android:id="@+id/tv_postal_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="false" />
+
+    <TextView
+        android:id="@+id/tv_parcels"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="false" />
+
+    <TextView
+        android:id="@+id/tv_remarks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="false" />
