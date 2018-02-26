@@ -2,4 +2,5 @@
     <string name="app_name">Roadbull</string>
     <string name="title_activity_maps">Roadbull</string>
     <string name="error_location_provider">Can not find location provider.</string>
+    <string name="error_location_permission_null">Location permission does not allow. Please check from your phone settings.</string>
 </resources>

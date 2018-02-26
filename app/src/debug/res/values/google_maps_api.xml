@@ -22,8 +22,8 @@
     -->
 
     <!--Release key-->
-    <!--<string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCsHVlxhBHqCvENFYkho4DTDNHCUAeJZGE</string>-->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCsHVlxhBHqCvENFYkho4DTDNHCUAeJZGE</string>
 
     <!--Debug key-->
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDxGXusjgxDSIWcjsNnmjEo8-es0CzK_DM</string>
+    <!--<string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDxGXusjgxDSIWcjsNnmjEo8-es0CzK_DM</string>-->
 </resources>

@@ -13,10 +13,6 @@ import java.util.List;
 import sg.tringo.roadbull.R;
 import sg.tringo.roadbull.model.Place;
 
-/**
- * Created by tringo on 2/6/18.
- */
-
 public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
     private Activity context;
@@ -51,6 +47,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
                 tvRemarks.setText("Remark: " + place.getRemark());
             }
         }
+
         return view;
     }
 

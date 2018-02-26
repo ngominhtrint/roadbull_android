@@ -123,16 +123,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                LatLng origin = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
-                LatLng dest = marker.getPosition();
 
-                // Getting URL to the Google Directions API
-                String url = getUrl(origin, dest);
-                Log.d("onMapClick", url.toString());
-                FetchUrl FetchUrl = new FetchUrl();
+                if (mLocation != null) {
+                    LatLng origin = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+                    LatLng dest = marker.getPosition();
 
-                // Start downloading json data from Google Directions API
-                FetchUrl.execute(url);
+                    // Getting URL to the Google Directions API
+                    String url = getUrl(origin, dest);
+                    Log.d("onMapClick", url.toString());
+                    FetchUrl FetchUrl = new FetchUrl();
+
+                    // Start downloading json data from Google Directions API
+                    FetchUrl.execute(url);
+                }
 
                 return false;
             }
@@ -143,7 +146,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         boolean isGPSEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         boolean isNetworkEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-        if (Build.VERSION.SDK_INT >= 23 &&
+        if (Build.VERSION.SDK_INT >= 19 &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{
@@ -183,7 +186,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .title("Current mLocation")
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
             mMap.addMarker(markerOptions);
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(gps, 18));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(gps, 17));
         }
     }
 
@@ -212,7 +215,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         places.add(ikeaTampines);
 
         //Set Custom InfoWindow Adapter
-        CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(MapsActivity.this, places);
+        CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(this, places);
         mMap.setInfoWindowAdapter(adapter);
 
         for (Place place : places) {
