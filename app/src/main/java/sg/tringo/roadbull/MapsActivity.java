@@ -105,7 +105,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onResume() {
         super.onResume();
-        getCurrentLocation();
     }
 
     @Override
@@ -190,36 +189,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void initialMarkers() {
 
-        LatLng theCoffeeHouseGeo = new LatLng(10.7957471, 106.6876993);
-        Place theCoffeeHouse = new Place("Current location", "43 Hoa Hồng, Phường 25, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam", "149544", "120", "Please go to Receiption and take the parcel from Lyon", theCoffeeHouseGeo);
+        LatLng yongKangGeo = new LatLng(1.3597017,103.8929297);
+        Place yongKang = new Place("Yong Kang Restaurant", "1 Greenwich Dr, Singapore", "149544", "120", "Please go to Reception and take the parcel from Lyon", yongKangGeo);
 
-        LatLng starbucksGeo = new LatLng(10.7947459, 106.6861651);
-        Place starbucks = new Place("Current location", "214-216 Phan Xích Long, Phường 7, Phú Nhuận, Hồ Chí Minh, Việt Nam", "149577", "90", "Please go to Receiption and take the parcel from Lyon", starbucksGeo);
+        LatLng happyHawkerGeo = new LatLng(1.3836701,103.8950322);
+        Place happyHawker = new Place("Happy Hawker", "267B Compassvale Link, Singapore", "149544", "120", "Please go to Reception and take the parcel from Lyon", happyHawkerGeo);
 
-        LatLng pergolaGeo = new LatLng(10.7935588,106.6747881);
-        Place pergola = new Place("Current location", "28A Trần Cao Vân, phường 12, Hồ Chí Minh, Việt Nam", "195577", "40", "Pleass go to Receiption and take the parcel from Lyon", pergolaGeo);
+        LatLng oceanSeafoodGeo = new LatLng(1.3779264,103.8918263);
+        Place oceanSeafood = new Place("Ocean Seafood", "435A Hougang Ave 8 #01-01, Singapore 531435", "149544", "120", "Please go to Reception and take the parcel from Lyon", oceanSeafoodGeo);
 
-        LatLng monkeyInBlackGeo = new LatLng(10.7891429,106.6744448);
-        Place monkeyInBlack = new Place("Current location", "522 Lê Văn Sỹ, Phường 14, Quận 3, Hồ Chí Minh, Việt Nam", "195070", "10", "Pleass go to Receiption and take the parcel from Monkey", monkeyInBlackGeo);
+        LatLng sevenStarsGeo = new LatLng(1.3648079,103.8885655);
+        Place sevenStars = new Place("7 Stars Coffee Shop", "23 Hougang Ave 3, Block 23, Singapore 530023", "195070", "10", "Please go to Reception and take the parcel from Monkey", sevenStarsGeo);
 
-        LatLng ozCoffeeGeo = new LatLng(10.787151,106.6768695);
-        Place ozCoffee = new Place("Current location", "Hẻm 207 Lê Văn Sỹ, Phường 13, Quận 3, Hồ Chí Minh, Việt Nam", "105070", "140", "Pleass go to Receiption and take the parcel from Monkey", ozCoffeeGeo);
+        LatLng ikeaTampinesGeo = new LatLng(1.3743002,103.9299968);
+        Place ikeaTampines = new Place("IKEA Tampines", "60 Tampines North Drive 2, Singapore 528764", "105070", "140", "Please go to Reception and take the parcel from Monkey", ikeaTampinesGeo);
 
         List<Place> places = new ArrayList<>();
-        places.add(theCoffeeHouse);
-        places.add(starbucks);
-        places.add(pergola);
-        places.add(monkeyInBlack);
-        places.add(ozCoffee);
+        places.add(yongKang);
+        places.add(happyHawker);
+        places.add(oceanSeafood);
+        places.add(sevenStars);
+        places.add(ikeaTampines);
+
+        //Set Custom InfoWindow Adapter
+        CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(MapsActivity.this, places);
+        mMap.setInfoWindowAdapter(adapter);
 
         for (Place place : places) {
             //Marker
             MarkerOptions markerOpt = new MarkerOptions();
             markerOpt.position(place.getGeo());
-
-            //Set Custom InfoWindow Adapter
-            CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(MapsActivity.this, place);
-            mMap.setInfoWindowAdapter(adapter);
             mMap.addMarker(markerOpt);
         }
 
@@ -227,7 +226,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             drawMarker(mLocation);
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), 15));
         } else {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(theCoffeeHouse.getGeo(), 15));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(yongKang.getGeo(), 15));
         }
     }
 

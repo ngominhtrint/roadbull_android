@@ -5,7 +5,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+
+import java.util.List;
 
 import sg.tringo.roadbull.R;
 import sg.tringo.roadbull.model.Place;
@@ -17,11 +20,11 @@ import sg.tringo.roadbull.model.Place;
 public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
     private Activity context;
-    private Place place;
+    private List<Place> places;
 
-    public CustomInfoWindowAdapter(Activity context, Place place) {
+    public CustomInfoWindowAdapter(Activity context, List<Place> places) {
         this.context = context;
-        this.place = place;
+        this.places = places;
     }
 
     @Override
@@ -39,12 +42,19 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         TextView tvParcels = (TextView) view.findViewById(R.id.tv_parcels);
         TextView tvRemarks = (TextView) view.findViewById(R.id.tv_remarks);
 
-        tvFrom.setText("From: " + place.getFrom());
-        tvAddress.setText("Address: " + place.getAddress());
-        tvPostalCode.setText("Postal code: " + place.getPostalCode());
-        tvParcels.setText("Total parcels: " + place.getParcels());
-        tvRemarks.setText("Remark: " + place.getRemark());
-
+        for (Place place : places) {
+            if (isPositionEqual(marker.getPosition(), place.getGeo()) ) {
+                tvFrom.setText("From: " + place.getFrom());
+                tvAddress.setText("Address: " + place.getAddress());
+                tvPostalCode.setText("Postal code: " + place.getPostalCode());
+                tvParcels.setText("Total parcels: " + place.getParcels());
+                tvRemarks.setText("Remark: " + place.getRemark());
+            }
+        }
         return view;
+    }
+
+    private boolean isPositionEqual(LatLng lhs, LatLng rhs) {
+        return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude;
     }
 }
