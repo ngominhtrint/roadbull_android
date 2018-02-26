@@ -1,7 +1,9 @@
 package sg.tringo.roadbull;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -99,7 +101,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        getCurrentLocation();
     }
 
     @Override
@@ -118,6 +119,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
+        getCurrentLocation();
         initialMarkers();
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -140,6 +142,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == MY_PERMISSIONS_REQUEST_LOCATION) {
+            getCurrentLocation();
+        } else {
+            Toast.makeText(this, R.string.error_location_permission_null, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void getCurrentLocation() {
@@ -172,8 +185,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         if (mLocation != null) {
-            Log.d(TAG, String.format("getCurrentLocation(%f, %f)", mLocation.getLatitude(),
-                    mLocation.getLongitude()));
             drawMarker(mLocation);
         }
     }
@@ -183,10 +194,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng gps = new LatLng(location.getLatitude(), location.getLongitude());
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(gps)
-                    .title("Current mLocation")
+                    .title("Current location")
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
             mMap.addMarker(markerOptions);
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(gps, 17));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(gps, 15));
         }
     }
 
